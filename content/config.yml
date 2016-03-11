@@ -1,0 +1,11 @@
+# Config for the Tiers plugin
+config:
+  # How many slots should each tier give by default, when no value is specified?
+  slots: 3
+  # Which tiers should be enabled? Make sure the rank name exists
+  tier1: true
+  tier2: false
+  tier3: false
+  tier4: false
+  # What theme should the interface be in game?
+  theme: seasonal
