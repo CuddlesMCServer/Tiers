@@ -178,19 +178,70 @@ local Tiers = lukkit.addPlugin("Tiers", "v1.0-beta",
                         end
                     else
                         sender:sendMessage(t[2].."/tier info {id} [username]")
-                        sender:sendMessage(t[3].."§oShow more information about this set")
+                        sender:sendMessage(t[3].."§oShow more information about your or [username]'s set {id}")
+                    end
+                elseif args[1] == "edit" then
+                    local uuid = sender:getUniqueId():toString()
+                    local name = sender:getName()
+                    if args[2] and args[3] and args[4] then
+                        args[2] = tonumber(args[2])
+                        args[3] = tonumber(args[3])
+                        if args[2] > 0 then
+                            local set = loadset( uuid, args[2] )
+                            if set.exists == true then
+                                if args[3] > 0 and args[3] <= set.slots then
+                                    if type(set.slotn[args[3]]) == "nil" then
+                                        local target = server:getOfflinePlayer(args[4])
+                                        local tname = target:getName()
+                                        local tuuid = target:getUniqueId():toString()
+                                        if target:isOnline() == true then
+                                            -- Get the target's username and unique user identity
+                                            if plugin.config.get( tuuid..".me.tier") then
+                                               if plugin.config.get(tuuid..".me.tier") >= set.tier then
+                                                    sender:sendMessage(t[2].."The player "..t[3]..tname..t[2].." has an equal or better tier already")
+                                                    return
+                                                end
+                                            end
+                                            set.slotn[args[3]] = tname
+                                            set.slotu[args[3]] = tuuid
+                                            saveset( uuid, args[2], set)
+                                            plugin.config.set( tuuid..".me.tier", set.tier)
+                                            plugin.config.set( tuuid..".me.id", args[2])
+                                            plugin.config.set( tuuid..".me.pname", sender:getName())
+                                            plugin.config.set( tuuid..".me.puuid", sender:getName())
+                                            plugin.config.save()
+                                            local tr = plugin.config.get("config.tier"..set.tier..".name")
+                                            server:dispatchCommand(server:getConsoleSender(), "pex user "..tname.." group add "..tr )
+                                            sender:sendMessage(t[2].."Added "..t[3]..tname..t[2].." to your set of "..t[3].."Tier "..set.tier )
+                                            target:sendMessage(t[3]..name..t[2].." added you their set of "..t[3].."Tier "..set.tier )
+                                        else
+                                            sender:sendMessage(t[2].."The player "..t[3]..tname..t[2].." is not currently online")
+                                        end
+                                    else
+                                        sender:sendMessage(t[2].."Error: "..t[3].."Slot "..args[3]..t[2].." is already occupied")
+                                    end
+                                else
+                                    sender:sendMessage(t[2].."Error: "..t[3].."Slot "..args[3]..t[2].." does not exist in that set")
+                                end
+                            else
+                                sender:sendMessage(t[2].."Error: You do not own that tier set")
+                            end
+                        else
+                            sender:sendMessage(t[2].."Error: You must state a number higher than zero")
+                        end
+                    else
+                        sender:sendMessage(t[2].."/tier edit {id} {slot} {username}")
+                        sender:sendMessage(t[3].."§oAdd {username} to slot {slot} of your set {id}")
                     end
                 else
                     sender:sendMessage(t[1].."==========[ "..t[2].."Tier Command - Help "..t[1].."]==========")
                     sender:sendMessage(t[2].."Version: "..t[3]..plugin.version)
                     sender:sendMessage(t[2].."/tier list [username]")
                     sender:sendMessage(t[2].."/tier info {id} [username]")
-                    sender:sendMessage("§cUNIMPLEMENTED "..t[2].."/tier edit {id} {slot} {username}")
+                    sender:sendMessage(t[2].."/tier edit {id} {slot} {username}")
                 end
             end
         )
-        
-        
         
     end
 )
