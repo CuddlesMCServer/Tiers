@@ -1,4 +1,4 @@
-local Tiers = lukkit.addPlugin("Tiers", "v1.0-beta",
+local Tiers = lukkit.addPlugin("Tiers", "v1.0",
     function(plugin)
         
         plugin.onEnable(
@@ -392,17 +392,17 @@ local Tiers = lukkit.addPlugin("Tiers", "v1.0-beta",
                                 local toffline = server:getOfflinePlayer(args[5])
                                 local tuuid = toffline:getUniqueId():toString()
                                 local tname = toffline:getName()
+                                sender:sendMessage(t[2].."Error: This feature is not implemented")
                             end
                         else
                             sender:sendMessage(t[2].."Error: /tieradmin edit {owner} {id} {slot} [{target}:clear]")
                         end
                     else    
-                        sender:sendMessage(t[1].."==========[ §cTier Command - Admin "..t[1].."]==========")
+                        sender:sendMessage(t[1].."==========[ §8Tier Command - Admin "..t[1].."]==========")
                         sender:sendMessage(t[2].."Version: "..t[3]..plugin.version)
                         sender:sendMessage(t[2].."/tieradmin create {owner} {tier} [slots]")
                         sender:sendMessage(t[2].."/tieradmin tier {owner} {id} {tier}")
                         sender:sendMessage(t[2].."/tieradmin edit {owner} {id} {slot} [{username}:clear]")
-                        sender:sendMessage(t[2].."/tieradmin immune {player} [true:false]")
                     end
                 else
                     sender:sendMessage(t[2].."Error: You need permission "..t[3].."tier.command.admin"..t[2].." to run that")
