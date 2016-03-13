@@ -1,11 +1,23 @@
-# Config for the Tiers plugin
+# Applicable for version v1.0 of the plugin
 config:
-  # How many slots should each tier give by default, when no value is specified?
+  # How many slots should be given by default? Can be overriden by adding the slots to the end of the tieradmin create command.
   slots: 3
-  # Which tiers should be enabled? Make sure the rank name exists
-  tier1: true
-  tier2: false
-  tier3: false
-  tier4: false
-  # What theme should the interface be in game?
-  theme: seasonal
+  # Details for Tier 1, always enabled by default. Set name to the rank name in Pex
+  tier1:
+    enable: true
+    name: "Tier1"
+  # Add other tiers here, theoretically can go as high as you like
+  tier2:
+    enable: false
+    name: "Tier2"
+  tier3:
+    enable: false
+    name: "Tier3"
+  tier4:
+    enable: false
+    name: "Tier4"
+  # What theme should the interface use?
+  # Can be: 'seasonal', 'red', 'blue', 'green', 'yellow', and 'purple'
+  theme: "seasonal"
+  # Do you want to enable easter eggs? These are harmless and don't affect gameplay. Requires theme above set to seasonal
+  eastereggs: true
