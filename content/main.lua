@@ -392,7 +392,33 @@ local Tiers = lukkit.addPlugin("Tiers", "v1.0",
                                 local toffline = server:getOfflinePlayer(args[5])
                                 local tuuid = toffline:getUniqueId():toString()
                                 local tname = toffline:getName()
-                                sender:sendMessage(t[2].."Error: This feature is not implemented")
+                                if toffline:isOnline() or toffline:hasPlayedBefore() then
+                                    if set.exists == true then
+                                        if set.slotn[args[4]] then
+                                            sender:sendMessage(t[2].."Error: This slot is occupied by "..t[3]..set.slotn[args[4]])
+                                        else
+                                            plugin.config.set(ouuid.."."..args[3]..".slot."..args[4]..".name", tname)
+                                            plugin.config.set(ouuid.."."..args[3]..".slot."..args[4]..".uuid", tuuid)
+                                            plugin.config.set(tuuid..".me.tier", set.tier)
+                                            plugin.config.set(tuuid..".me.id", args[3])
+                                            plugin.config.set(tuuid..".me.pname", oname)
+                                            plugin.config.set(tuuid..".me.puuid", ouuid)
+                                            plugin.config.save()
+                                            server:dispatchCommand(server:getConsoleSender(), "pex user "..tuuid.." group add "..plugin.config.get("config.tier"..set.tier..".name"))
+                                            sender:sendMessage(t[2].."Success: Added "..t[3]..tname..t[2].." to "..t[3]..oname.."'s tier set")
+                                            if toffline:isOnline() then
+                                                toffline:sendMessage(t[2].."Information: "..t[3]..sender:getName()..t[2].." added you to "..t[3]..oname..t[2].."'s set")
+                                            end
+                                            if offline:isOnline() then
+                                                offline:sendMessage(t[2].."Information: "..t[3]..sender:getName()..t[2].." added "..tname.." to your tier set "..args[3])
+                                            end
+                                        end
+                                    else
+                                        sender:sendMessage(t[2].."Error: That tier set does not exist")
+                                    end
+                                else
+                                    sender:sendMessage(t[2].."Error: "..t[3]..tname..t[2].." has not played before")
+                                end
                             end
                         else
                             sender:sendMessage(t[2].."Error: /tieradmin edit {owner} {id} {slot} [{target}:clear]")
